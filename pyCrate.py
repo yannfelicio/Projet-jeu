@@ -6,14 +6,29 @@ import os
 
 # Fonctions à développer
 
-def jeu_en_cours(caisses, cibles)->bool:
-    '''
+def jeu_en_cours(caisses, cibles)->bool: #quel est la condition de la fin du jeu, si toute les caisse sont sur les cible c'est fini
+    ''' #les boxes ont une coordonné x et y
     Fonction testant si le jeu est encore en cours et retournant un booléen comme réponse sur l'état de la partie.
     :param caisses: La liste des caisses du niveau en cours
     :param cibles: La liste des cibles du niveau en cours
     :return: True si la partie est finie, False sinon
     '''
-    pass
+    arret: bool = False
+    cpt: int = 0
+    #regarder si une caisse est sur cible, #comparer les deux listes
+    #for i in caisses:
+
+    for i in range (len(caisses)):
+        if caisses[i] == cibles[i]:
+            cpt += 1
+        if cpt == len(caisses):
+            arret = True
+    return arret
+
+
+
+
+
 
 
 def charger_niveau(joueur, caisses, cibles, murs, path):
@@ -27,7 +42,31 @@ def charger_niveau(joueur, caisses, cibles, murs, path):
     :param path: Chemin du fichier.txt
     :return:
     '''
-    pass
+    cpt_x: int = 0
+    cpt_y: int = 0
+    with open(path, "r") as filin:
+        lignes: list = filin.readlines()
+
+        for i in lignes:
+
+            for j in i:
+
+                if j == "#":
+                    #faire deuc boucles imbriqués, 20, 20 est la position initiale un for pour x et un for pour y
+                    #32 étant l'espace entre deu éléments.  20 + 0 * 32 /// 20 étant l'espace entre le fichier texte et le premier bloc
+                    #du coup 20 et 32 reste il n'y a juste le 0 qui va varier
+
+                    murs.append(creer_mur(X_PREMIERE_CASE + (DISTANCE_ENTRE_CASE * cpt_x),Y_PREMIERE_CASE + (DISTANCE_ENTRE_CASE * cpt_y)))
+
+                elif j == ".":
+                    cibles.append(creer_cible(X_PREMIERE_CASE + (DISTANCE_ENTRE_CASE * cpt_x),Y_PREMIERE_CASE + (DISTANCE_ENTRE_CASE * cpt_y)))
+                elif j == "$":
+                    caisses.append(creer_caisse(X_PREMIERE_CASE + (DISTANCE_ENTRE_CASE * cpt_x),Y_PREMIERE_CASE + (DISTANCE_ENTRE_CASE * cpt_y)))
+                elif j == "@":
+                    joueur.append(creer_personnage(X_PREMIERE_CASE + (DISTANCE_ENTRE_CASE * cpt_x),Y_PREMIERE_CASE + (DISTANCE_ENTRE_CASE * cpt_y)))
+                cpt_x += 1
+            cpt_y += 1
+            cpt_x = 0
 
 
 def mouvement(direction, can, joueur, murs, caisses, liste_image):
@@ -42,7 +81,24 @@ def mouvement(direction, can, joueur, murs, caisses, liste_image):
     :param liste_image: liste des images (murs, caisses etc...) détaillée dans l'énoncé
     :return:
     '''
-    pass
+    #Il y a t-il des none dans la liste joueur, que contient cette putain de list ????
+    #si oui peut-on faire index -1 si il va a gauche ou doit-on l'enlever et appender à l'inde -1 ?
+    #si non, que faire ?
+    #il n'y a qu'une seule liste à la fois qui bouge, soit x, soit y, a gauche et droite c'est y et haut bas = x
+
+    for i in direction:
+        for j in range(len(joueur)):
+            if i == "gauche":
+                #position du personnage(x,y)--> (x-1, y) utiliser del et remplacer
+            #demander à jéjé 
+            if i == "droite":
+
+            if i == "haut":
+
+            if i == "bas":
+
+
+
 
 
 def effectuer_mouvement(coordonnee_destination, coordonnee_case_suivante, ancienne_caisse, caisses, murs, joueur, can,
@@ -128,3 +184,4 @@ Y_PREMIERE_CASE = 20
 # Ne pas modifier !
 if __name__ == '__main__':
     os.system("fourni\simulateur.py")
+
