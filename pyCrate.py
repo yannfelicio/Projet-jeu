@@ -85,17 +85,32 @@ def mouvement(direction, can, joueur, murs, caisses, liste_image):
     #si oui peut-on faire index -1 si il va a gauche ou doit-on l'enlever et appender à l'inde -1 ?
     #si non, que faire ?
     #il n'y a qu'une seule liste à la fois qui bouge, soit x, soit y, a gauche et droite c'est y et haut bas = x
+    if direction == "gauche":
+        coordonnee_destination = creer_case_vide(coordonnee_x(joueur[0]) - DISTANCE_ENTRE_CASE, coordonnee_y(joueur[0]))
+        coordonnee_case_suivante = creer_case_vide(coordonnee_x(joueur[0]) - (DISTANCE_ENTRE_CASE * 2), coordonnee_y(joueur[0]))
 
-    for i in direction:
-        for j in range(len(joueur)):
-            if i == "gauche":
-                #position du personnage(x,y)--> (x-1, y) utiliser del et remplacer
-            #demander à jéjé 
-            if i == "droite":
+    if direction == "droite":
+        coordonnee_destination = creer_case_vide(coordonnee_x(joueur[0]) + DISTANCE_ENTRE_CASE, coordonnee_y(joueur[0]))
+        coordonnee_case_suivante = creer_case_vide(coordonnee_x(joueur[0]) + (DISTANCE_ENTRE_CASE * 2), coordonnee_y(joueur[0]))
 
-            if i == "haut":
+    if direction == "haut":
+        coordonnee_destination = creer_case_vide(coordonnee_x(joueur[0]), coordonnee_y(joueur[0]) - DISTANCE_ENTRE_CASE)
+        coordonnee_case_suivante = creer_case_vide(coordonnee_x(joueur[0]), coordonnee_y(joueur[0]) - (DISTANCE_ENTRE_CASE * 2))
 
-            if i == "bas":
+    if direction == "bas":
+        coordonnee_destination = creer_case_vide(coordonnee_x(joueur[0]), coordonnee_y(joueur[0]) + DISTANCE_ENTRE_CASE)
+        coordonnee_case_suivante = creer_case_vide(coordonnee_x(joueur[0]), coordonnee_y(joueur[0]) + (DISTANCE_ENTRE_CASE * 2))
+
+    ancienne_caisse = coordonnee_destination
+    deplace_joueur_x = coordonnee_x(coordonnee_destination)
+    deplace_joueur_y = coordonnee_y(coordonnee_destination)
+    deplace_caisse_x = coordonnee_x(coordonnee_case_suivante)
+    deplace_caisse_y = coordonnee_y(coordonnee_case_suivante)
+
+
+    effectuer_mouvement(coordonnee_destination, coordonnee_case_suivante, ancienne_caisse, caisses, murs, joueur, can,
+                        deplace_caisse_x, deplace_caisse_y, deplace_joueur_x, deplace_joueur_y, liste_image)
+
 
 
 
@@ -123,6 +138,13 @@ def effectuer_mouvement(coordonnee_destination, coordonnee_case_suivante, ancien
     :return:
     '''
     pass
+    ### ici il faudra faire 4 conditions
+    ### 1/2 - si un mur on pass si caisse derrière caisse on pass aussi
+    ### 3/4 - si une caisse seul on la pousse , si case vide on deplace
+    ### le joueur ne peux pas tirer une caisse, slmt pousser /
+    ### si mur derriere caisse on ne peux pas pousser
+    ### le joueur ne peut pas aller sur les cibles
+    ### la caisse sur une cible peut etre deplacer si besoin/
 
 
 def chargement_score(scores_file_path, dict_scores):
