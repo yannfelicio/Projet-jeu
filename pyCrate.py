@@ -137,7 +137,28 @@ def effectuer_mouvement(coordonnee_destination, coordonnee_case_suivante, ancien
     :param liste_image: liste des images (murs, caisses etc...) détaillée dans l'énoncé
     :return:
     '''
-    pass
+
+    if joueur in murs:
+        pass
+    if caisses in coordonnee_case_suivante:
+        pass
+
+    if est_egal_a(joueur, murs):
+        pass
+    else:
+        coordonnee_destination = (deplace_joueur_x, murs)
+
+
+
+    #if joueur in
+    #if coordonnee_destination in caisses:
+
+
+
+
+
+
+
     ### ici il faudra faire 4 conditions
     ### 1/2 - si un mur on pass si caisse derrière caisse on pass aussi
     ### 3/4 - si une caisse seul on la pousse , si case vide on deplace
@@ -206,4 +227,5 @@ Y_PREMIERE_CASE = 20
 # Ne pas modifier !
 if __name__ == '__main__':
     os.system("fourni\simulateur.py")
+
 
