@@ -18,11 +18,12 @@ def jeu_en_cours(caisses, cibles)->bool: #quel est la condition de la fin du jeu
     #regarder si une caisse est sur cible, #comparer les deux listes
     #for i in caisses:
 
-    for i in range (len(caisses)):
-        if caisses[i] == cibles[i]:
-            cpt += 1
-        if cpt == len(caisses):
-            arret = True
+    for i in cibles:
+        for j in caisses:
+            if est_egal_a(j, i):
+                cpt += 1
+    if cpt == len(cibles):
+        arret = True
     return arret
 
 
@@ -138,15 +139,29 @@ def effectuer_mouvement(coordonnee_destination, coordonnee_case_suivante, ancien
     :return:
     '''
 
-    if joueur in murs:
-        pass
-    if caisses in coordonnee_case_suivante:
+    if coordonnee_destination in murs: #si un mur alors je bouge pas
         pass
 
-    if est_egal_a(joueur, murs):
-        pass
+
+    elif coordonnee_destination in caisses:
+        if coordonnee_case_suivante in caisses or coordonnee_case_suivante in murs: #si double caisse alors je bouge pas
+            pass
+        else:
+            for c in caisses:
+                if est_egal_a(c, ancienne_caisse):
+                    caisses.remove(c)
+                    joueur.append(creer_personnage(deplace_joueur_x, deplace_joueur_y))
+                    ancien_joueur = joueur.pop(0)
+                    creer_image(can,coordonnee_x(ancien_joueur),coordonnee_y(ancien_joueur), liste_image[6])
+                    caisses.append(creer_caisse(deplace_caisse_x,deplace_caisse_y))
+
     else:
-        coordonnee_destination = (deplace_joueur_x, murs)
+        joueur.append(creer_personnage(deplace_joueur_x, deplace_joueur_y))
+        ancien_joueur = joueur.pop(0)
+        creer_image(can,coordonnee_x(ancien_joueur),coordonnee_y(ancien_joueur), liste_image[6])
+
+
+
 
 
 
