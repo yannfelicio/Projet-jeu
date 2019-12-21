@@ -6,7 +6,8 @@ import os
 
 # Fonctions à développer
 
-def jeu_en_cours(caisses, cibles)->bool: #quel est la condition de la fin du jeu, si toute les caisse sont sur les cible c'est fini
+def jeu_en_cours(caisses,
+                 cibles) -> bool:  # quel est la condition de la fin du jeu, si toute les caisse sont sur les cible c'est fini
     ''' #les boxes ont une coordonné x et y
     Fonction testant si le jeu est encore en cours et retournant un booléen comme réponse sur l'état de la partie.
     :param caisses: La liste des caisses du niveau en cours
@@ -15,8 +16,8 @@ def jeu_en_cours(caisses, cibles)->bool: #quel est la condition de la fin du jeu
     '''
     arret: bool = False
     cpt: int = 0
-    #regarder si une caisse est sur cible, #comparer les deux listes
-    #for i in caisses:
+    # regarder si une caisse est sur cible, #comparer les deux listes
+    # for i in caisses:
 
     for i in cibles:
         for j in caisses:
@@ -25,11 +26,6 @@ def jeu_en_cours(caisses, cibles)->bool: #quel est la condition de la fin du jeu
     if cpt == len(cibles):
         arret = True
     return arret
-
-
-
-
-
 
 
 def charger_niveau(joueur, caisses, cibles, murs, path):
@@ -53,18 +49,22 @@ def charger_niveau(joueur, caisses, cibles, murs, path):
             for j in i:
 
                 if j == "#":
-                    #faire deuc boucles imbriqués, 20, 20 est la position initiale un for pour x et un for pour y
-                    #32 étant l'espace entre deu éléments.  20 + 0 * 32 /// 20 étant l'espace entre le fichier texte et le premier bloc
-                    #du coup 20 et 32 reste il n'y a juste le 0 qui va varier
+                    # faire deuc boucles imbriqués, 20, 20 est la position initiale un for pour x et un for pour y
+                    # 32 étant l'espace entre deu éléments.  20 + 0 * 32 /// 20 étant l'espace entre le fichier texte et le premier bloc
+                    # du coup 20 et 32 reste il n'y a juste le 0 qui va varier
 
-                    murs.append(creer_mur(X_PREMIERE_CASE + (DISTANCE_ENTRE_CASE * cpt_x),Y_PREMIERE_CASE + (DISTANCE_ENTRE_CASE * cpt_y)))
+                    murs.append(creer_mur(X_PREMIERE_CASE + (DISTANCE_ENTRE_CASE * cpt_x),
+                                          Y_PREMIERE_CASE + (DISTANCE_ENTRE_CASE * cpt_y)))
 
                 elif j == ".":
-                    cibles.append(creer_cible(X_PREMIERE_CASE + (DISTANCE_ENTRE_CASE * cpt_x),Y_PREMIERE_CASE + (DISTANCE_ENTRE_CASE * cpt_y)))
+                    cibles.append(creer_cible(X_PREMIERE_CASE + (DISTANCE_ENTRE_CASE * cpt_x),
+                                              Y_PREMIERE_CASE + (DISTANCE_ENTRE_CASE * cpt_y)))
                 elif j == "$":
-                    caisses.append(creer_caisse(X_PREMIERE_CASE + (DISTANCE_ENTRE_CASE * cpt_x),Y_PREMIERE_CASE + (DISTANCE_ENTRE_CASE * cpt_y)))
+                    caisses.append(creer_caisse(X_PREMIERE_CASE + (DISTANCE_ENTRE_CASE * cpt_x),
+                                                Y_PREMIERE_CASE + (DISTANCE_ENTRE_CASE * cpt_y)))
                 elif j == "@":
-                    joueur.append(creer_personnage(X_PREMIERE_CASE + (DISTANCE_ENTRE_CASE * cpt_x),Y_PREMIERE_CASE + (DISTANCE_ENTRE_CASE * cpt_y)))
+                    joueur.append(creer_personnage(X_PREMIERE_CASE + (DISTANCE_ENTRE_CASE * cpt_x),
+                                                   Y_PREMIERE_CASE + (DISTANCE_ENTRE_CASE * cpt_y)))
                 cpt_x += 1
             cpt_y += 1
             cpt_x = 0
@@ -82,25 +82,29 @@ def mouvement(direction, can, joueur, murs, caisses, liste_image):
     :param liste_image: liste des images (murs, caisses etc...) détaillée dans l'énoncé
     :return:
     '''
-    #Il y a t-il des none dans la liste joueur, que contient cette putain de list ????
-    #si oui peut-on faire index -1 si il va a gauche ou doit-on l'enlever et appender à l'inde -1 ?
-    #si non, que faire ?
-    #il n'y a qu'une seule liste à la fois qui bouge, soit x, soit y, a gauche et droite c'est y et haut bas = x
+    # Il y a t-il des none dans la liste joueur, que contient cette putain de list ????
+    # si oui peut-on faire index -1 si il va a gauche ou doit-on l'enlever et appender à l'inde -1 ?
+    # si non, que faire ?
+    # il n'y a qu'une seule liste à la fois qui bouge, soit x, soit y, a gauche et droite c'est y et haut bas = x
     if direction == "gauche":
         coordonnee_destination = creer_case_vide(coordonnee_x(joueur[0]) - DISTANCE_ENTRE_CASE, coordonnee_y(joueur[0]))
-        coordonnee_case_suivante = creer_case_vide(coordonnee_x(joueur[0]) - (DISTANCE_ENTRE_CASE * 2), coordonnee_y(joueur[0]))
+        coordonnee_case_suivante = creer_case_vide(coordonnee_x(joueur[0]) - (DISTANCE_ENTRE_CASE * 2),
+                                                   coordonnee_y(joueur[0]))
 
     if direction == "droite":
         coordonnee_destination = creer_case_vide(coordonnee_x(joueur[0]) + DISTANCE_ENTRE_CASE, coordonnee_y(joueur[0]))
-        coordonnee_case_suivante = creer_case_vide(coordonnee_x(joueur[0]) + (DISTANCE_ENTRE_CASE * 2), coordonnee_y(joueur[0]))
+        coordonnee_case_suivante = creer_case_vide(coordonnee_x(joueur[0]) + (DISTANCE_ENTRE_CASE * 2),
+                                                   coordonnee_y(joueur[0]))
 
     if direction == "haut":
         coordonnee_destination = creer_case_vide(coordonnee_x(joueur[0]), coordonnee_y(joueur[0]) - DISTANCE_ENTRE_CASE)
-        coordonnee_case_suivante = creer_case_vide(coordonnee_x(joueur[0]), coordonnee_y(joueur[0]) - (DISTANCE_ENTRE_CASE * 2))
+        coordonnee_case_suivante = creer_case_vide(coordonnee_x(joueur[0]),
+                                                   coordonnee_y(joueur[0]) - (DISTANCE_ENTRE_CASE * 2))
 
     if direction == "bas":
         coordonnee_destination = creer_case_vide(coordonnee_x(joueur[0]), coordonnee_y(joueur[0]) + DISTANCE_ENTRE_CASE)
-        coordonnee_case_suivante = creer_case_vide(coordonnee_x(joueur[0]), coordonnee_y(joueur[0]) + (DISTANCE_ENTRE_CASE * 2))
+        coordonnee_case_suivante = creer_case_vide(coordonnee_x(joueur[0]),
+                                                   coordonnee_y(joueur[0]) + (DISTANCE_ENTRE_CASE * 2))
 
     ancienne_caisse = coordonnee_destination
     deplace_joueur_x = coordonnee_x(coordonnee_destination)
@@ -108,13 +112,8 @@ def mouvement(direction, can, joueur, murs, caisses, liste_image):
     deplace_caisse_x = coordonnee_x(coordonnee_case_suivante)
     deplace_caisse_y = coordonnee_y(coordonnee_case_suivante)
 
-
     effectuer_mouvement(coordonnee_destination, coordonnee_case_suivante, ancienne_caisse, caisses, murs, joueur, can,
                         deplace_caisse_x, deplace_caisse_y, deplace_joueur_x, deplace_joueur_y, liste_image)
-
-
-
-
 
 
 def effectuer_mouvement(coordonnee_destination, coordonnee_case_suivante, ancienne_caisse, caisses, murs, joueur, can,
@@ -139,12 +138,12 @@ def effectuer_mouvement(coordonnee_destination, coordonnee_case_suivante, ancien
     :return:
     '''
 
-    if coordonnee_destination in murs: #si un mur alors je bouge pas
+    if coordonnee_destination in murs:  # si un mur alors je bouge pas
         pass
 
 
     elif coordonnee_destination in caisses:
-        if coordonnee_case_suivante in caisses or coordonnee_case_suivante in murs: #si double caisse alors je bouge pas
+        if coordonnee_case_suivante in caisses or coordonnee_case_suivante in murs:  # si double caisse alors je bouge pas
             pass
         else:
             for c in caisses:
@@ -152,27 +151,16 @@ def effectuer_mouvement(coordonnee_destination, coordonnee_case_suivante, ancien
                     caisses.remove(c)
                     joueur.append(creer_personnage(deplace_joueur_x, deplace_joueur_y))
                     ancien_joueur = joueur.pop(0)
-                    creer_image(can,coordonnee_x(ancien_joueur),coordonnee_y(ancien_joueur), liste_image[6])
-                    caisses.append(creer_caisse(deplace_caisse_x,deplace_caisse_y))
+                    creer_image(can, coordonnee_x(ancien_joueur), coordonnee_y(ancien_joueur), liste_image[6])
+                    caisses.append(creer_caisse(deplace_caisse_x, deplace_caisse_y))
 
     else:
         joueur.append(creer_personnage(deplace_joueur_x, deplace_joueur_y))
         ancien_joueur = joueur.pop(0)
-        creer_image(can,coordonnee_x(ancien_joueur),coordonnee_y(ancien_joueur), liste_image[6])
+        creer_image(can, coordonnee_x(ancien_joueur), coordonnee_y(ancien_joueur), liste_image[6])
 
-
-
-
-
-
-    #if joueur in
-    #if coordonnee_destination in caisses:
-
-
-
-
-
-
+    # if joueur in
+    # if coordonnee_destination in caisses:
 
     ### ici il faudra faire 4 conditions
     ### 1/2 - si un mur on pass si caisse derrière caisse on pass aussi
@@ -190,10 +178,29 @@ def chargement_score(scores_file_path, dict_scores):
     :param dict_scores:  le dictionnaire pour le stockage
     :return:
     '''
-    pass
 
 
-def maj_score(niveau_en_cours, dict_scores)-> str:
+dict_scores: dict = {}
+liste_score: list = []
+scores_file_path = '.\\scores\\scores.txt'
+
+with open(scores_file_path, "r") as fichier:
+    for lignes in fichier:
+        lignes = lignes.strip()
+        lignes = lignes[:-1]
+        lignes = lignes.split(";")
+
+        for i in range(1, len(lignes)):
+            liste_score.append(lignes[i])
+
+        dict_scores[lignes[0]] = liste_score
+        liste_score = []
+
+        # for i in range(0, len(liste_score)):
+        #   liste_score[i] = float(liste_score[i])
+
+
+def maj_score(niveau_en_cours, dict_scores) -> str:
     '''
     Fonction mettant à jour l'affichage des scores en stockant dans un str l'affichage visible
     sur la droite du jeu.
@@ -204,10 +211,18 @@ def maj_score(niveau_en_cours, dict_scores)-> str:
     :param dict_scores: le dictionnaire pour stockant les scores
     :return str: Le str contenant l'affichage pour les scores ("\n" pour passer à la ligne)
     '''
-    pass
+
+    if niveau_en_cours == "1":
+        return "score1"
+    if niveau_en_cours == "2":
+        return "score2"
+    if niveau_en_cours == "3":
+        return "score3"
+    if niveau_en_cours == "4":
+        return "score4"
 
 
-def enregistre_score(temps_initial, nb_coups, score_base, dict_scores, niveau_en_cours)-> int:
+def enregistre_score(temps_initial, nb_coups, score_base, dict_scores, niveau_en_cours) -> int:
     '''
     Fonction enregistrant un nouveau score réalisé par le joueur. Le calcul de score est le suivant :
     score_base - (temps actuel - temps initial) - (nombre de coups * valeur d'un coup)
@@ -219,7 +234,8 @@ def enregistre_score(temps_initial, nb_coups, score_base, dict_scores, niveau_en
     :param niveau_en_cours: Le numéro du niveau en cours
     :return: le score sous forme d'un int
     '''
-    pass
+    new_score: float = 0
+    new_score = score_base - ( - temps_initial) - (nb_coups * VALEUR_COUP)
 
 
 def update_score_file(scores_file_path, dict_scores):
@@ -242,5 +258,3 @@ Y_PREMIERE_CASE = 20
 # Ne pas modifier !
 if __name__ == '__main__':
     os.system("fourni\simulateur.py")
-
-
