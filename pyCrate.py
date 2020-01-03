@@ -211,9 +211,15 @@ def maj_score(niveau_en_cours, dict_scores) -> str:
     :param dict_scores: le dictionnaire pour stockant les scores
     :return str: Le str contenant l'affichage pour les scores ("\n" pour passer à la ligne)
     '''
+    #score_1:list = dict_scores["1"]
+    #liste = dict_scores.get("1")
+    # comment insérer la valeur d'une clé correspondande d'un dictionnaire dans une liste pour la retourner ?
+    # nous avons tester qu'il est possible de retourner des listes ainsi que plusieurs return grace à une ,
+    # l'idée était de faire un return : return "Niveau ", niveau_en_cours,
 
     if niveau_en_cours == "1":
-        return "score1"
+        #return dict_scores["1"]
+        pass
     if niveau_en_cours == "2":
         return "score2"
     if niveau_en_cours == "3":
@@ -234,9 +240,16 @@ def enregistre_score(temps_initial, nb_coups, score_base, dict_scores, niveau_en
     :param niveau_en_cours: Le numéro du niveau en cours
     :return: le score sous forme d'un int
     '''
-    new_score: float = 0
-    new_score = score_base - ( - temps_initial) - (nb_coups * VALEUR_COUP)
+    temps_actuel = time.time() # time.time() nous donne le temps au moment de l'appel
+    new_score: int = 0
+    new_score = round(score_base - (temps_actuel - temps_initial) - (nb_coups * VALEUR_COUP))
+    #print(new_score)
 
+    dict_scores[niveau_en_cours] = new_score
+    # niveau_en_cours est un str, on insert le nouveau score dans le dico selon le niveau
+
+
+    return new_score
 
 def update_score_file(scores_file_path, dict_scores):
     '''
@@ -246,7 +259,7 @@ def update_score_file(scores_file_path, dict_scores):
     :return:
     '''
     pass
-
+    # Ici on devra faire un with open en "w" afin d'écrire les score stockés dans le dico
 
 # Constantes à utiliser
 
