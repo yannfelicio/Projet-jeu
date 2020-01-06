@@ -178,26 +178,23 @@ def chargement_score(scores_file_path, dict_scores):
     :param dict_scores:  le dictionnaire pour le stockage
     :return:
     '''
+    liste_score: list = []
+    scores_file_path = '.\\scores\\scores.txt'
 
+    with open(scores_file_path, "r") as fichier:
+        for lignes in fichier:
+            lignes = lignes.strip()
+            lignes = lignes[:-1]
+            lignes = lignes.split(";")
 
-dict_scores: dict = {}
-liste_score: list = []
-scores_file_path = '.\\scores\\scores.txt'
+            for i in range(1, len(lignes)):
+                liste_score.append(lignes[i])
 
-with open(scores_file_path, "r") as fichier:
-    for lignes in fichier:
-        lignes = lignes.strip()
-        lignes = lignes[:-1]
-        lignes = lignes.split(";")
+            dict_scores[lignes[0]] = liste_score
+            liste_score = []
 
-        for i in range(1, len(lignes)):
-            liste_score.append(lignes[i])
-
-        dict_scores[lignes[0]] = liste_score
-        liste_score = []
-
-        # for i in range(0, len(liste_score)):
-        #   liste_score[i] = float(liste_score[i])
+            # for i in range(0, len(liste_score)):
+            #   liste_score[i] = float(liste_score[i])
 
 
 def maj_score(niveau_en_cours, dict_scores) -> str:
@@ -216,16 +213,13 @@ def maj_score(niveau_en_cours, dict_scores) -> str:
     # comment insérer la valeur d'une clé correspondande d'un dictionnaire dans une liste pour la retourner ?
     # nous avons tester qu'il est possible de retourner des listes ainsi que plusieurs return grace à une ,
     # l'idée était de faire un return : return "Niveau ", niveau_en_cours,
-
-    if niveau_en_cours == "1":
-        #return dict_scores["1"]
-        pass
-    if niveau_en_cours == "2":
-        return "score2"
-    if niveau_en_cours == "3":
-        return "score3"
-    if niveau_en_cours == "4":
-        return "score4"
+    scores: str = ""
+    new_scores: str = ""
+    print(dict_scores)
+    for i in range(len(dict_scores[niveau_en_cours])):
+        scores = str(i + 1) + " )" + " " + str(dict_scores[niveau_en_cours][i]) + "\n"
+        new_scores += scores
+    return new_scores
 
 
 def enregistre_score(temps_initial, nb_coups, score_base, dict_scores, niveau_en_cours) -> int:
@@ -240,16 +234,18 @@ def enregistre_score(temps_initial, nb_coups, score_base, dict_scores, niveau_en
     :param niveau_en_cours: Le numéro du niveau en cours
     :return: le score sous forme d'un int
     '''
-    temps_actuel = time.time() # time.time() nous donne le temps au moment de l'appel
-    new_score: int = 0
-    new_score = round(score_base - (temps_actuel - temps_initial) - (nb_coups * VALEUR_COUP))
-    #print(new_score)
+    temps_actuel = time.time()# time.time() nous donne le temps au moment de l'appel
+    nouveau_score: int = 0
+    nouveau_score = round(score_base - (temps_actuel - temps_initial) - (nb_coups * VALEUR_COUP))
 
-    dict_scores[niveau_en_cours] = new_score
+    for i in range(len(dict_scores[niveau_en_cours])):
+
+        if int(dict_scores[niveau_en_cours][i]) < nouveau_score:
+            dict_scores[niveau_en_cours].insert(i, str(nouveau_score))
+            dict_scores[niveau_en_cours].pop()
+            break
     # niveau_en_cours est un str, on insert le nouveau score dans le dico selon le niveau
-
-
-    return new_score
+    return nouveau_score
 
 def update_score_file(scores_file_path, dict_scores):
     '''
@@ -258,7 +254,12 @@ def update_score_file(scores_file_path, dict_scores):
     :param dict_scores: Le dictionnaire stockant les scores
     :return:
     '''
+    #with open(scores_file_path, "w") as fillin:
+     #   fillin.write(dict_scores)
+
     pass
+
+
     # Ici on devra faire un with open en "w" afin d'écrire les score stockés dans le dico
 
 # Constantes à utiliser
