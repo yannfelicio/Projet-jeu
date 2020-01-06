@@ -215,7 +215,7 @@ def maj_score(niveau_en_cours, dict_scores) -> str:
     # l'idée était de faire un return : return "Niveau ", niveau_en_cours,
     scores: str = ""
     new_scores: str = ""
-    print(dict_scores)
+
     for i in range(len(dict_scores[niveau_en_cours])):
         scores = str(i + 1) + " )" + " " + str(dict_scores[niveau_en_cours][i]) + "\n"
         new_scores += scores
@@ -254,10 +254,20 @@ def update_score_file(scores_file_path, dict_scores):
     :param dict_scores: Le dictionnaire stockant les scores
     :return:
     '''
-    #with open(scores_file_path, "w") as fillin:
-     #   fillin.write(dict_scores)
+    texte_score: str = ""
 
-    pass
+    for key, value in dict_scores.items():
+        texte_score += str(key) + ";"
+        for score in value:
+            texte_score += str(score) + ";"
+        texte_score += "\n"
+
+
+    with open(scores_file_path, "w") as fillin:
+
+        fillin.write(texte_score)
+        fillin.close()
+
 
 
     # Ici on devra faire un with open en "w" afin d'écrire les score stockés dans le dico
