@@ -179,7 +179,7 @@ def chargement_score(scores_file_path, dict_scores):
     :return:
     '''
     liste_score: list = []
-    scores_file_path = '.\\scores\\scores.txt'
+    
 
     with open(scores_file_path, "r") as fichier:
         for lignes in fichier:
@@ -214,8 +214,8 @@ def maj_score(niveau_en_cours, dict_scores) -> str:
     # nous avons tester qu'il est possible de retourner des listes ainsi que plusieurs return grace à une ,
     # l'idée était de faire un return : return "Niveau ", niveau_en_cours,
     scores: str = ""
-    new_scores: str = ""
-
+    new_scores: str = "Niveau " + niveau_en_cours + "\n"
+        
     for i in range(len(dict_scores[niveau_en_cours])):
         scores = str(i + 1) + " )" + " " + str(dict_scores[niveau_en_cours][i]) + "\n"
         new_scores += scores
