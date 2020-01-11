@@ -188,11 +188,10 @@ def chargement_score(scores_file_path, dict_scores):
             lignes = lignes.split(";")
 
             for i in range(1, len(lignes)):
-                liste_score.append(lignes[i])
+                liste_score.append(int(lignes[i]))
 
-            dict_scores[lignes[0]] = liste_score
+            dict_scores[lignes[0]] = sorted(liste_score, reverse=True)# fonction qui permet de trier la liste des score du plus grand au plus petit
             liste_score = []
-
             # for i in range(0, len(liste_score)):
             #   liste_score[i] = float(liste_score[i])
 
@@ -213,9 +212,13 @@ def maj_score(niveau_en_cours, dict_scores) -> str:
     # comment insérer la valeur d'une clé correspondande d'un dictionnaire dans une liste pour la retourner ?
     # nous avons tester qu'il est possible de retourner des listes ainsi que plusieurs return grace à une ,
     # l'idée était de faire un return : return "Niveau ", niveau_en_cours,
-    scores: str = ""
+
+    #trie: list = sorted(dict_scores[niveau_en_cours], reverse=True)
+    #scores: str = ""
     new_scores: str = "Niveau " + niveau_en_cours + "\n"
-        
+
+
+
     for i in range(len(dict_scores[niveau_en_cours])):
         scores = str(i + 1) + " )" + " " + str(dict_scores[niveau_en_cours][i]) + "\n"
         new_scores += scores
@@ -241,8 +244,9 @@ def enregistre_score(temps_initial, nb_coups, score_base, dict_scores, niveau_en
     for i in range(len(dict_scores[niveau_en_cours])):
 
         if int(dict_scores[niveau_en_cours][i]) < nouveau_score:
+
             dict_scores[niveau_en_cours].insert(i, str(nouveau_score))
-            dict_scores[niveau_en_cours].pop()
+            dict_scores[niveau_en_cours].pop(i)
             break
     # niveau_en_cours est un str, on insert le nouveau score dans le dico selon le niveau
     return nouveau_score
