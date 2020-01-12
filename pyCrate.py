@@ -27,7 +27,6 @@ def jeu_en_cours(caisses,
         arret = True
     return arret
 
-
 def charger_niveau(joueur, caisses, cibles, murs, path):
     '''
     Fonction permettant de charger depuis un fichier.txt et de remplir les différentes listes permettant le
@@ -49,7 +48,7 @@ def charger_niveau(joueur, caisses, cibles, murs, path):
             for j in i:
 
                 if j == "#":
-                    # faire deuc boucles imbriqués, 20, 20 est la position initiale un for pour x et un for pour y
+                    # faire deux boucles imbriqués, 20, 20 est la position initiale un for pour x et un for pour y
                     # 32 étant l'espace entre deu éléments.  20 + 0 * 32 /// 20 étant l'espace entre le fichier texte et le premier bloc
                     # du coup 20 et 32 reste il n'y a juste le 0 qui va varier
 
@@ -82,10 +81,9 @@ def mouvement(direction, can, joueur, murs, caisses, liste_image):
     :param liste_image: liste des images (murs, caisses etc...) détaillée dans l'énoncé
     :return:
     '''
-    # Il y a t-il des none dans la liste joueur, que contient cette putain de list ????
-    # si oui peut-on faire index -1 si il va a gauche ou doit-on l'enlever et appender à l'inde -1 ?
-    # si non, que faire ?
+    
     # il n'y a qu'une seule liste à la fois qui bouge, soit x, soit y, a gauche et droite c'est y et haut bas = x
+    # Lorsqu'on fait un mouvement, on crée une case vide aux coordonnées de la destination
     if direction == "gauche":
         coordonnee_destination = creer_case_vide(coordonnee_x(joueur[0]) - DISTANCE_ENTRE_CASE, coordonnee_y(joueur[0]))
         coordonnee_case_suivante = creer_case_vide(coordonnee_x(joueur[0]) - (DISTANCE_ENTRE_CASE * 2),
@@ -105,13 +103,17 @@ def mouvement(direction, can, joueur, murs, caisses, liste_image):
         coordonnee_destination = creer_case_vide(coordonnee_x(joueur[0]), coordonnee_y(joueur[0]) + DISTANCE_ENTRE_CASE)
         coordonnee_case_suivante = creer_case_vide(coordonnee_x(joueur[0]),
                                                    coordonnee_y(joueur[0]) + (DISTANCE_ENTRE_CASE * 2))
-
+    
+    # on crée la variable ancienne_caisse que l'on va utiliser dans la fonction effectuer_mouvement
+    # cela va permettre de conserver les coordonées afin de pouvoir supprimer l'ancienne caisse
     ancienne_caisse = coordonnee_destination
+    # on crée les variables deplace pour les utilisé dans la fonction effectuer_mouvement
     deplace_joueur_x = coordonnee_x(coordonnee_destination)
     deplace_joueur_y = coordonnee_y(coordonnee_destination)
     deplace_caisse_x = coordonnee_x(coordonnee_case_suivante)
     deplace_caisse_y = coordonnee_y(coordonnee_case_suivante)
-
+    
+    # on appele la fonction effectuer_mouvement ici car elle est appelée par mouvement ( selon la direction ) 
     effectuer_mouvement(coordonnee_destination, coordonnee_case_suivante, ancienne_caisse, caisses, murs, joueur, can,
                         deplace_caisse_x, deplace_caisse_y, deplace_joueur_x, deplace_joueur_y, liste_image)
 
@@ -141,7 +143,6 @@ def effectuer_mouvement(coordonnee_destination, coordonnee_case_suivante, ancien
     if coordonnee_destination in murs:  # si un mur alors je bouge pas
         pass
 
-
     elif coordonnee_destination in caisses:
         if coordonnee_case_suivante in caisses or coordonnee_case_suivante in murs:  # si double caisse alors je bouge pas
             pass
@@ -159,18 +160,6 @@ def effectuer_mouvement(coordonnee_destination, coordonnee_case_suivante, ancien
         ancien_joueur = joueur.pop(0)
         creer_image(can, coordonnee_x(ancien_joueur), coordonnee_y(ancien_joueur), liste_image[6])
 
-    # if joueur in
-    # if coordonnee_destination in caisses:
-
-    ### ici il faudra faire 4 conditions
-    ### 1/2 - si un mur on pass si caisse derrière caisse on pass aussi
-    ### 3/4 - si une caisse seul on la pousse , si case vide on deplace
-    ### le joueur ne peux pas tirer une caisse, slmt pousser /
-    ### si mur derriere caisse on ne peux pas pousser
-    ### le joueur ne peut pas aller sur les cibles
-    ### la caisse sur une cible peut etre deplacer si besoin/
-
-
 def chargement_score(scores_file_path, dict_scores):
     '''
     Fonction chargeant les scores depuis un fichier.txt et les stockent dans un dictionnaire
@@ -179,22 +168,18 @@ def chargement_score(scores_file_path, dict_scores):
     :return:
     '''
     liste_score: list = []
-    
 
     with open(scores_file_path, "r") as fichier:
         for lignes in fichier:
-            lignes = lignes.strip()
-            lignes = lignes[:-1]
-            lignes = lignes.split(";")
+            lignes = lignes.strip() # fonction .strip() afin d'enlever les \n en fin de ligne
+            lignes = lignes[:-1] # on supprime le dernier caractère -> ;
+            lignes = lignes.split(";") # on découpe les bloc de caractère séparer par un ; en liste 
 
             for i in range(1, len(lignes)):
-                liste_score.append(int(lignes[i]))
+                liste_score.append(int(lignes[i])) # on insert le contenu de la liste en int afin de pouvoir trier par ordre décroissant
 
             dict_scores[lignes[0]] = sorted(liste_score, reverse=True)# fonction qui permet de trier la liste des score du plus grand au plus petit
-            liste_score = []
-            # for i in range(0, len(liste_score)):
-            #   liste_score[i] = float(liste_score[i])
-
+            liste_score = [] # on remet la liste score à zero pour la prochaine ligne
 
 def maj_score(niveau_en_cours, dict_scores) -> str:
     '''
@@ -207,21 +192,14 @@ def maj_score(niveau_en_cours, dict_scores) -> str:
     :param dict_scores: le dictionnaire pour stockant les scores
     :return str: Le str contenant l'affichage pour les scores ("\n" pour passer à la ligne)
     '''
-    #score_1:list = dict_scores["1"]
-    #liste = dict_scores.get("1")
-    # comment insérer la valeur d'une clé correspondande d'un dictionnaire dans une liste pour la retourner ?
-    # nous avons tester qu'il est possible de retourner des listes ainsi que plusieurs return grace à une ,
-    # l'idée était de faire un return : return "Niveau ", niveau_en_cours,
 
-    #trie: list = sorted(dict_scores[niveau_en_cours], reverse=True)
-    #scores: str = ""
+    scores: str = ""
     new_scores: str = "Niveau " + niveau_en_cours + "\n"
-
-
-
+        
     for i in range(len(dict_scores[niveau_en_cours])):
         scores = str(i + 1) + " )" + " " + str(dict_scores[niveau_en_cours][i]) + "\n"
         new_scores += scores
+    
     return new_scores
 
 
@@ -260,7 +238,7 @@ def update_score_file(scores_file_path, dict_scores):
     '''
     texte_score: str = ""
 
-    for key, value in dict_scores.items():
+    for key, value in dict_scores.items(): # .imets nous permet de récuperer chaque clé et ses valeurs
         texte_score += str(key) + ";"
         for score in value:
             texte_score += str(score) + ";"
@@ -271,10 +249,6 @@ def update_score_file(scores_file_path, dict_scores):
 
         fillin.write(texte_score)
         fillin.close()
-
-
-
-    # Ici on devra faire un with open en "w" afin d'écrire les score stockés dans le dico
 
 # Constantes à utiliser
 
